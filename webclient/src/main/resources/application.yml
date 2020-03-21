@@ -1,0 +1,27 @@
+spring:
+  data:
+    mongodb:
+      authentication-database: test
+      username: my_user
+      password: password123
+      port: 27017
+      host: localhost
+      database: test
+  application:
+    name: batch processing server
+  boot:
+    admin:
+      client:
+        url: http://localhost:8080
+server:
+  port: 8082
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    export:
+      graphite:
+        enabled: true

@@ -1,0 +1,17 @@
+server:
+  port: 8081
+spring:
+  data:
+    mongodb:
+      authentication-database: test
+      username: my_user
+      password: password123
+      port: 27017
+      host: localhost
+      database: test
+  application:
+    name: message server
+  boot:
+    admin:
+      client:
+        url: http://localhost:8080
