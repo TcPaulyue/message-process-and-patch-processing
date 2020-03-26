@@ -37,7 +37,7 @@ docker pull graphiteapp/graphite-statsd
 docker run -d --name graphite-server -p 80:80 -p 2003-2004:2003-2004 -p 2023-2024:2023-2024 -p 8125:8125/udp -p 8126:8126 graphiteapp/graphite-statsd
 ```
 
-####Configure Grafana to display metrics
+#### Configure Grafana to display metrics
 
 - Pull Grafana docker image
 
