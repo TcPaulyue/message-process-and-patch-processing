@@ -10,12 +10,18 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 public class Controller {
 
-    private final Producer producer;
+    private final DemoService demoService;
 
-    @RequestMapping("/invoke")
-    public String handle() throws Exception {
+    @RequestMapping("/invokeMessage")
+    public String handleMessage() throws Exception {
         log.info("invoke");
-        producer.updateFlux();
-        return "batch processing has been invoked";
+        demoService.updateMessageFlux();
+        return "message processing has been invoked";
+    }
+    @RequestMapping("/invokeUser")
+    public String handleUser() throws Exception {
+        log.info("invoke");
+        demoService.updateUserFlux();
+        return "user processing has been invoked";
     }
 }

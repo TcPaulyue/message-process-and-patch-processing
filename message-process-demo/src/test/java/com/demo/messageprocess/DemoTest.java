@@ -1,5 +1,7 @@
 package com.demo.messageprocess;
 
+import com.demo.messageprocess.Repository.AsyncMessageRepository;
+import com.demo.messageprocess.Repository.UserRepository;
 import com.demo.messageprocess.model.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +17,7 @@ public class DemoTest {
     UserRepository userRepository;
 
     @Autowired
-    MessageRepository messageRepository;
+    AsyncMessageRepository asyncMessageRepository;
 
     @Autowired
     MessageService messageService;

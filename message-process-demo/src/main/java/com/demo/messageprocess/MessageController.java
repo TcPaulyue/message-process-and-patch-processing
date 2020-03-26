@@ -2,8 +2,10 @@ package com.demo.messageprocess;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.demo.messageprocess.Repository.AsyncUserRepository;
 import com.demo.messageprocess.model.Event;
 import com.demo.messageprocess.model.Message;
+import com.demo.messageprocess.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import reactor.util.function.Tuple2;
 
 import java.time.Duration;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Stream;
 
 
@@ -21,6 +24,7 @@ import java.util.stream.Stream;
 public class MessageController {
     private final MessageService messageService;
 
+    private final AsyncUserRepository asyncUserRepository;
   //  private final ReactiveMongoTemplate reactiveMongoTemplate;
 
     @GetMapping()
@@ -29,7 +33,10 @@ public class MessageController {
     }
 
 
-
+    @GetMapping("/users")
+    public Flux<User> getAllUsers(){
+        return asyncUserRepository.findAll();
+    }
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE,value = "/events")
     public Flux<Event> eventFlux(){
         Flux<Event> eventFlux = Flux.fromStream(Stream.generate(
@@ -41,19 +48,16 @@ public class MessageController {
 
 
 
-
-
     @PostMapping("/sendMessage")
-    public Flux<Message> sendMessage(@RequestBody JSONObject params){
+    public void sendMessage(@RequestBody JSONObject params){
         String sender = params.getString("sender");
         String  content= params.getString("content");
         String userGroup = params.getString("userGroup");
         messageService.sendMessageToGroup(sender,content,userGroup);
-        return messageService.getAllMessages();
     }
 
     @PutMapping("/checkMessage/{receiver}")
-    public Flux<Message> checkMessage(@PathVariable String receiver){
+    public List<Message> checkMessage(@PathVariable String receiver){
         messageService.checkMessage(receiver);
         return messageService.getMessageByUserName(receiver);
     }

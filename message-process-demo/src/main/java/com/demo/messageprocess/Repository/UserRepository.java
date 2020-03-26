@@ -1,4 +1,4 @@
-package com.demo.messageprocess;
+package com.demo.messageprocess.Repository;
 
 import com.demo.messageprocess.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;

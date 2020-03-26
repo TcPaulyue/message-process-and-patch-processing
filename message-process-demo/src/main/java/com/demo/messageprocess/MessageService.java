@@ -1,6 +1,9 @@
 package com.demo.messageprocess;
 
 
+import com.demo.messageprocess.Repository.AsyncMessageRepository;
+import com.demo.messageprocess.Repository.MessageRepository;
+import com.demo.messageprocess.Repository.UserRepository;
 import com.demo.messageprocess.model.Message;
 import com.demo.messageprocess.model.State;
 import com.demo.messageprocess.model.User;
@@ -13,23 +16,24 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MessageService {
-    private final MessageRepository messageRepository;
+    private final AsyncMessageRepository asyncMessageRepository;
     private final UserRepository userRepository;
+    private final MessageRepository messageRepository;
 
     public Flux<Message> getAllMessages(){
-        return messageRepository.findAll();
+        return asyncMessageRepository.findAll();
     }
 
-    public Flux<Message> getMessageByUserName(String user){
+    public List<Message> getMessageByUserName(String user){
         return messageRepository.findAllByReceiver(user);
     }
 
     public void checkMessage(String receiver){
-        Flux<Message> messageFlux = messageRepository.findAllByReceiverAndState(receiver, State.UNCHECKED);
-        messageFlux.subscribe(message -> {
+        List<Message> messageList = messageRepository.findAllByReceiverAndState(receiver, State.UNCHECKED);
+        for(Message message:messageList){
             message.setState(State.CHECKED);
             messageRepository.save(message);
-        });
+        }
     }
 
     public void sendMessageToGroup(String sender, String  content, String userGroup){
@@ -40,7 +44,7 @@ public class MessageService {
             message.setSender(sender);
             message.setReceiver(user.getName());
             message.setContent(content);
-            messageRepository.save(message);
+            asyncMessageRepository.save(message);
         });
     }
 }

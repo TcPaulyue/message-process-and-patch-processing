@@ -1,4 +1,4 @@
-package com.demo.messageprocess;
+package com.demo.messageprocess.Repository;
 
 import com.demo.messageprocess.model.Message;
 import com.demo.messageprocess.model.State;
@@ -8,7 +8,7 @@ import reactor.core.publisher.Flux;
 
 
 @Repository
-public interface MessageRepository extends ReactiveMongoRepository<Message,String> {
+public interface AsyncMessageRepository extends ReactiveMongoRepository<Message,String> {
     Flux<Message> findAllByReceiverAndState(String receiver, State state);
     Flux<Message> findAllByReceiver(String receiver);
 }

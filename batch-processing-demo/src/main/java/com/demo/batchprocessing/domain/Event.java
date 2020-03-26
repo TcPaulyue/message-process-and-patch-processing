@@ -1,4 +1,4 @@
-package com.demo.batchprocessing;
+package com.demo.batchprocessing.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
